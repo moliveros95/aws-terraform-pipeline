@@ -1,4 +1,4 @@
-name: OpenTofu CI/CD
+name: Terraform CI/CD
 
 on:
   push:
@@ -9,16 +9,16 @@ on:
       - main
 
 jobs:
-  opentofu:
-    name: OpenTofu Plan & Apply
+  terraform:
+    name: Terraform Plan & Apply
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup OpenTofu
-        uses: opentofu/setup-opentofu@v1
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -27,12 +27,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-southeast-1
 
-      - name: OpenTofu Init
-        run: tofu init
+      - name: Terraform Init
+        run: terraform init
 
-      - name: OpenTofu Plan
-        run: tofu plan
+      - name: Terraform Plan
+        run: terraform plan
 
-      - name: OpenTofu Apply
+      - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: tofu apply -auto-approve
+        run: terraform apply -auto-approve
