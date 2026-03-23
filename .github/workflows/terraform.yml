@@ -7,6 +7,16 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Choose action'
+        required: true
+        default: 'apply'
+        type: choice
+        options:
+          - apply
+          - destroy
 
 jobs:
   opentofu:
@@ -31,8 +41,13 @@ jobs:
         run: tofu init
 
       - name: OpenTofu Plan
+        if: github.event.inputs.action != 'destroy'
         run: tofu plan
 
       - name: OpenTofu Apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.event.inputs.action != 'destroy' && github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: tofu apply -auto-approve
+
+      - name: OpenTofu Destroy
+        if: github.event.inputs.action == 'destroy'
+        run: tofu destroy -auto-approve
