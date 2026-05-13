@@ -40,6 +40,7 @@ Push to main
 - [GitHub Actions](https://github.com/features/actions) – CI/CD pipeline
 
 ## Project Structure
+```
 aws-terraform-pipeline/
 ├── .github/
 │   └── workflows/
@@ -56,6 +57,7 @@ aws-terraform-pipeline/
 ├── ecs.tf
 ├── iam.tf
 └── .gitignore
+```
 
 ## Prerequisites
 - AWS account with CLI configured
